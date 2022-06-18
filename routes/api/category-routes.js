@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const { includes } = require("lodash");
-const { resolve } = require("path");
 const { Category, Product, ProductTag } = require("../../models");
 
 // The `/api/categories` endpoint
