@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { includes } = require("lodash");
 const { resolve } = require("path");
-const { Category, Product } = require("../../models");
+const { Category, Product, ProductTag } = require("../../models");
 
 // The `/api/categories` endpoint
 
@@ -62,7 +62,7 @@ router.put("/:id", (req, res) => {
     },
   })
   .then((dbCategoryData)=>{
-    if (!dbCategoryData){
+    if (!dbCategoryData[0]){
       res.status(404).json({message: "No category found with this ID"});
       return;
     }
