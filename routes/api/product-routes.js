@@ -9,10 +9,13 @@ router.get("/", (req, res) => {
   // be sure to include its associated Category and Tag data
   Product.findAll({
     include: [
-      Category,
+      {
+        model: Category,
+        attributes: ["category_name"],
+      },
       {
         model: Tag,
-        through: ProductTag,
+        attributes: ["tag_name"],
       },
     ],
   })
@@ -34,11 +37,11 @@ router.get("/:id", (req, res) => {
     include: [
       {
         model: Category,
-        attributes: ["id", "category_name"],
+        attributes: ["category_name"],
       },
       {
         model: Tag,
-        attributes: ["id", "tag_name"],
+        attributes: ["tag_name"],
       },
     ],
   })
@@ -57,26 +60,6 @@ router.get("/:id", (req, res) => {
 
 // create new product
 router.post("/", (req, res) => {
-  /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
-    }
-  */
-  Product.create({
-    product_name: req.body.product_name,
-    price: req.body.price,
-    stock: req.body.stock,
-    tagIds: req.body.tagIds,
-  })
-    .then((dbProductData) => res.json(dbProductData))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
