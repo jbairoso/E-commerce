@@ -16,6 +16,7 @@ router.get("/", (req, res) => {
   })
     .then((dbTagData) => res.json(dbTagData))
     .catch((err) => {
+      console.log(err);
       res.status(500).json(err);
     });
 });
@@ -24,10 +25,13 @@ router.get("/:id", (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
   Tag.findOne({
-    include: [
+    where:{
+      id: req.params.id,
+    },
+    include:[
       {
-        model: Product,
-        through: ProductTag,
+        model:Product,
+        through:ProductTag,
       },
     ],
   })
